@@ -19,6 +19,8 @@ if (isset($_POST["login"])) {
         mysqli_stmt_close($stmt);
 
         if ($u && password_verify($password, $u["password"])) {
+            // Regenerate session ID to prevent session fixation attacks
+            session_regenerate_id(true);
             // LƯU SESSION
             $_SESSION["user_id"] = $u["id"];
             $_SESSION["username"] = $u["username"];
