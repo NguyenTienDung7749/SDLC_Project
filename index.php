@@ -17,39 +17,60 @@ mysqli_close($connect);
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Trang Chủ</title>
+  <title>Trang Chủ – SDLC Project</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="app-page">
 <div class="card wide">
-  <h2>Trang Chủ – Danh sách sản phẩm</h2>
 
+  <!-- Navigation -->
   <div class="nav">
-    Xin chào <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>
-    <span class="badge <?php echo $_SESSION['role'] === 'admin' ? 'admin' : 'user'; ?>">
-      <?php echo htmlspecialchars($_SESSION["role"]); ?>
+    <span class="nav-brand">
+      <span class="nav-brand-dot">🛍️</span>
+      SDLC Project
     </span>
     <span class="spacer"></span>
+    <div class="nav-user">
+      Xin chào, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>
+      <span class="badge <?php echo $_SESSION['role'] === 'admin' ? 'admin' : 'user'; ?>">
+        <?php echo htmlspecialchars($_SESSION["role"]); ?>
+      </span>
+    </div>
     <?php if ($_SESSION["role"] === "admin"): ?>
-      <a href="admin.php">Trang Admin</a>
+      <a href="admin.php">⚙️ Trang Admin</a>
     <?php endif; ?>
-    <a href="logout.php">Đăng xuất</a>
+    <a href="logout.php" class="nav-logout">Đăng xuất</a>
   </div>
 
-  <table>
-    <tr><th>ID</th><th>Tên sản phẩm</th><th>Giá (VNĐ)</th><th>Ngày tạo</th></tr>
-    <?php foreach ($rows as $p): ?>
-      <tr>
-        <td><?php echo $p["id"]; ?></td>
-        <td><?php echo htmlspecialchars($p["name"]); ?></td>
-        <td><?php echo number_format($p["price"]); ?></td>
-        <td><?php echo htmlspecialchars($p["created_at"]); ?></td>
-      </tr>
-    <?php endforeach; ?>
-    <?php if (empty($rows)): ?>
-      <tr><td colspan="4" style="text-align:center;color:#9ca3af;">Chưa có sản phẩm nào.</td></tr>
-    <?php endif; ?>
-  </table>
+  <!-- Page header -->
+  <div class="page-header">
+    <div>
+      <div class="page-title">🛒 Danh sách sản phẩm</div>
+      <div class="page-subtitle"><?php echo count($rows); ?> sản phẩm hiện có</div>
+    </div>
+  </div>
+
+  <!-- Product grid -->
+  <?php if (!empty($rows)): ?>
+    <div class="product-grid">
+      <?php foreach ($rows as $p): ?>
+        <div class="product-card">
+          <div class="product-card-icon">📦</div>
+          <div class="product-card-name"><?php echo htmlspecialchars($p["name"]); ?></div>
+          <div class="product-card-price"><?php echo number_format($p["price"]); ?> VNĐ</div>
+          <div class="product-card-date">🕐 <?php echo htmlspecialchars(substr($p["created_at"], 0, 10)); ?></div>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  <?php else: ?>
+    <div class="empty-state">
+      <span class="empty-state-icon">📭</span>
+      <div class="empty-state-text">Chưa có sản phẩm nào</div>
+      <div class="empty-state-sub">Hãy quay lại sau nhé!</div>
+    </div>
+  <?php endif; ?>
+
 </div>
+<script src="app.js"></script>
 </body>
 </html>
