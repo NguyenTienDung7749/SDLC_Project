@@ -23,13 +23,16 @@ $me_id = $_SESSION["user_id"];
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="card">
+<div class="card wide">
   <h2>Quản lý User</h2>
 
-  <div class="link" style="text-align:left">
+  <div class="nav">
     Xin chào <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>
-    · <a href="admin.php">Về Admin</a>
-    · <a href="logout.php">Đăng xuất</a>
+    <span class="badge admin">admin</span>
+    <span class="spacer"></span>
+    <a href="admin.php">Sản phẩm</a>
+    <a href="index.php">Trang Chủ</a>
+    <a href="logout.php">Đăng xuất</a>
   </div>
 
   <table>
@@ -40,7 +43,11 @@ $me_id = $_SESSION["user_id"];
       <tr>
         <td><?php echo $u["id"]; ?></td>
         <td><?php echo htmlspecialchars($u["username"]); ?></td>
-        <td><?php echo htmlspecialchars($u["role"]); ?></td>
+        <td>
+          <span class="badge <?php echo $u['role'] === 'admin' ? 'admin' : 'user'; ?>">
+            <?php echo htmlspecialchars($u["role"]); ?>
+          </span>
+        </td>
         <td class="actions">
           <?php if ($u["id"] != $me_id): ?>
             <?php if ($u["role"] === "user"): ?>
@@ -50,15 +57,17 @@ $me_id = $_SESSION["user_id"];
               <a href="user_role.php?id=<?php echo $u["id"]; ?>&role=user"
                  onclick="return confirm('Đổi admin này thành user?')">Set User</a>
             <?php endif; ?>
-
-            <a href="user_delete.php?id=<?php echo $u["id"]; ?>"
+            <a class="danger" href="user_delete.php?id=<?php echo $u["id"]; ?>"
                onclick="return confirm('Xóa user này?')">Xóa</a>
           <?php else: ?>
-            (Bạn)
+            <span style="color:#9ca3af;font-size:13px;">(Bạn)</span>
           <?php endif; ?>
         </td>
       </tr>
     <?php endforeach; ?>
+    <?php if(empty($users)): ?>
+    <tr><td colspan="4" style="text-align:center;color:#9ca3af;">Không có user nào.</td></tr>
+    <?php endif; ?>
   </table>
 </div>
 </body>
