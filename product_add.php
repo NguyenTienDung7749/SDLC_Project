@@ -13,7 +13,7 @@ if(isset($_POST["save"])){
   else{
     $stmt=mysqli_prepare($connect,"INSERT INTO products(name,price) VALUES(?,?)");
     mysqli_stmt_bind_param($stmt,"si",$name,$price);
-    if(mysqli_stmt_execute($stmt)){ $ok=true; $msg="Thêm thành công!"; }
+    if(mysqli_stmt_execute($stmt)){ $ok=true; $msg="Thêm sản phẩm thành công!"; }
     else $msg="Lỗi: ".mysqli_stmt_error($stmt);
     mysqli_stmt_close($stmt);
   }
@@ -21,23 +21,50 @@ if(isset($_POST["save"])){
 mysqli_close($connect);
 ?>
 <!doctype html>
-<html lang="vi"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Thêm sản phẩm</title><link rel="stylesheet" href="style.css">
-</head><body>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Thêm sản phẩm – SDLC Project</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="app-page">
 <div class="card">
-<h2>Thêm sản phẩm</h2>
 
-<div class="nav">
-  <span class="spacer"></span>
-  <a href="admin.php">← Quay lại Admin</a>
-  <a href="logout.php">Đăng xuất</a>
+  <!-- Navigation -->
+  <div class="nav">
+    <span class="spacer"></span>
+    <a href="admin.php">← Quay lại Admin</a>
+    <a href="logout.php" class="nav-logout">Đăng xuất</a>
+  </div>
+
+  <h2>➕ Thêm sản phẩm</h2>
+  <p class="subtitle">Điền thông tin sản phẩm mới</p>
+
+  <?php if($msg!=""): ?>
+    <div class="msg <?php echo $ok?'ok':''; ?>" id="alert-msg">
+      <?php echo htmlspecialchars($msg); ?>
+      <button type="button" class="msg-close" onclick="this.parentElement.remove()" title="Đóng">×</button>
+    </div>
+  <?php endif; ?>
+
+  <form method="post">
+    <div class="form-group">
+      <label for="name">Tên sản phẩm</label>
+      <input type="text" id="name" name="name" placeholder="VD: Áo thun cotton" required
+             value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name']) : ''; ?>">
+    </div>
+
+    <div class="form-group">
+      <label for="price">Giá (VNĐ, số nguyên)</label>
+      <input type="number" id="price" name="price" placeholder="VD: 150000" min="0" required
+             value="<?php echo isset($_POST['price']) ? htmlspecialchars($_POST['price']) : ''; ?>">
+    </div>
+
+    <button type="submit" name="save">💾 Lưu sản phẩm</button>
+  </form>
+
 </div>
-
-<?php if($msg!=""): ?><div class="msg <?php echo $ok?'ok':'';?>"><?php echo htmlspecialchars($msg);?></div><?php endif; ?>
-<form method="post">
-<label>Tên sản phẩm</label><input name="name" required>
-<label>Giá (VNĐ, số nguyên)</label><input name="price" type="number" min="0" required>
-<button name="save">Lưu sản phẩm</button>
-</form>
-</div></body></html>
+<script src="app.js"></script>
+</body>
+</html>

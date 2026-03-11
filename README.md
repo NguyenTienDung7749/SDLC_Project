@@ -89,15 +89,16 @@ Visit http://localhost/SDLC_Project/login.php
 | `register.php` | New user registration (bcrypt password hash) |
 | `login.php` | Login form – `password_verify()`, stores session |
 | `logout.php` | Destroys session, redirects to login |
-| `index.php` | Home page – public product list |
-| `admin.php` | Admin dashboard – product CRUD list |
+| `index.php` | Home page – product card grid for logged-in users |
+| `admin.php` | Admin dashboard – product CRUD with stats |
 | `product_add.php` | Add a product (admin only) |
 | `product_edit.php` | Edit a product (admin only) |
 | `product_delete.php` | Delete a product (admin only) |
 | `admin_users.php` | User management list (admin only) |
 | `user_role.php` | Change a user's role (admin only) |
 | `user_delete.php` | Delete a user (admin only) |
-| `style.css` | Shared CSS stylesheet |
+| `style.css` | Shared CSS design system |
+| `app.js` | Shared vanilla JS utilities |
 | `database.sql` | Full SQL schema + default admin INSERT |
 
 ---
@@ -125,3 +126,58 @@ Visit http://localhost/SDLC_Project/login.php
 - Session ID is regenerated after login to prevent session fixation
 - Admin self-delete and self-role-removal are blocked server-side
 - XSS is mitigated with `htmlspecialchars()` on all user output
+
+---
+
+## UI/UX Changelog
+
+### Design System
+- New CSS custom-property design system (colors, shadows, radii, font stack)
+- Modern violet/blue gradient color palette with consistent variables
+- Smooth transitions and hover animations throughout
+
+### Auth Pages (login / register)
+- Brand logo area with gradient icon and styled name
+- Show/hide password toggle button on all password inputs
+- Password strength indicator (4-level: Yếu → Mạnh) on register page
+- Inline confirm-password match hint on register page
+- Auto-dismiss success alerts after 4 seconds
+- Dismissible error alerts with × close button
+- Vertically centered layout with soft gradient background
+
+### Home Page
+- Product **card grid** layout (replaces plain table)
+- Each card shows icon, name, price with gradient text, and date
+- Polished empty state with icon when no products exist
+- Improved nav bar with brand logo, user badge, and role-aware links
+
+### Admin – Products
+- Stats card showing total product count
+- Improved table with styled `edit` / `delete` action buttons
+- **Custom confirm modal** (replaces native browser `confirm()`) for delete
+- `backdrop-filter` blur overlay, animated modal entrance
+
+### Admin – Users
+- Stats card showing total user count
+- Color-coded action buttons: promote (purple), demote (amber), delete (red)
+- Custom confirm modal for all destructive actions
+- "Bạn" self-label badge instead of hidden buttons
+
+### Product Add / Edit Forms
+- `form-group` wrappers with proper spacing
+- Placeholder text for better UX
+- Input values persisted after validation errors (add form)
+- Consistent page layout with back navigation
+
+### JavaScript (`app.js` – new file)
+- `togglePw()` – show/hide password with SVG eye icon
+- `checkPwStrength()` – 4-bar strength indicator
+- `checkConfirm()` – real-time confirm-password match
+- `confirmAction()` / `closeModal()` – custom accessible delete modal
+- Auto-dismiss for `.msg.ok` alerts (4 s + fade out)
+- Keyboard (Escape) and backdrop click to close modal
+
+### Responsive Design
+- Mobile-friendly grid (2-column on small screens)
+- Adjusted padding and font sizes for narrow viewports
+- Flex-wrap navigation for small screens
